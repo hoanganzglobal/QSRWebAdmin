@@ -1,0 +1,9 @@
+input:focus,
+select:focus,
+button:focus {
+  outline: none;
+}
+
+.toolbar {
+  float: left;
+}

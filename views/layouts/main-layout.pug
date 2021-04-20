@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+html(lang="en")
+  head
+    meta(charset="UTF-8")
+    meta(http-equiv="X-UA-Compatible", content="IE=edge")
+    meta(http-equiv="Content-Type", content="text/html; charset=utf-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no")
+    title #{payTitle}
+    meta(name="msapplication-tap-highlight", content="no")
+    meta(name="description", content="QSR e-Commerce.")
+    link(rel="stylesheet", href="/css/main.css")
+    link(rel="stylesheet", href="/css/common.css")
+  body 
+    .app-container.app-theme-white.body-tabs-shadow.fixed-sidebar.fixed-header
+      include header.pug
+      include ui-theme-setting.pug
+
+      .app-main
+        include sidebar.pug
+        .app-main__outer
+          block content
+          include footer.pug
+
+    block script
+    script(type='text/javascript', src='/js/main.js')
+    script(type='text/javascript', src='/js/common.js')
+
+    block styles
+
+    
+    
