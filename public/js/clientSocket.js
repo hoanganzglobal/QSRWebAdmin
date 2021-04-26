@@ -27,20 +27,13 @@ socket.on('notify order update', (data) => {
       '</b>',
     2
   );
-
-  Push.create('Notify order updated!', {
-    body:
-      'New update status of order id ' +
-      data.data.Id +
-      ' is: ' +
-      statusCodeToString[data.data.OrderStatusId],
-    icon: '/icon.png',
-    timeout: 4000,
-    onClick: function () {
-      window.focus();
-      this.close();
-    },
-  });
+  
+  var message =
+    'New update status of order id ' +
+    data.data.Id +
+    ' is: ' +
+    statusCodeToString[data.data.OrderStatusId];
+  NotifyMe('Notify order updated!', message);
 
   if ($('#Notify').hasClass('badge-notify') == false) {
     document
