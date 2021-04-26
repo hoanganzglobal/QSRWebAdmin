@@ -14,6 +14,18 @@ block content
         .page-title-actions
           button.btn-shadow.mr-3.btn.btn-dark(type='button', data-toggle='tooltip', title='Analytics Dashboard', data-placement='bottom')
             i.fa.fa-star
+          .d-inline-block.dropdown
+            button.btn-shadow.dropdown-toggle.btn.btn-info(type='button', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false')
+              span.btn-icon-wrapper.pr-2.opacity-7
+                i.fa.fa-business-time.fa-w-20
+              | Actions
+            .dropdown-menu.dropdown-menu-right(tabindex='-1', role='menu', aria-hidden='true', x-placement='bottom-end', style='position: absolute; transform: translate3d(-130px, 33px, 0px); top: 0px; left: 0px; will-change: transform;')
+              ul.nav.flex-column
+                li.nav-item
+                  a.nav-link(href='/promotions/add')
+                    i.nav-link-icon.lnr-inbox
+                    span
+                      | Add New Memo
 
     .tab-content
       #tab-content-0.tab-pane.tabs-animation.fade.show.active(role='tabpanel')
@@ -39,6 +51,8 @@ block content
                         thead
                           tr
                             th
+                              | 
+                            th
                               | Memo No.
                             th
                               | Memo Name
@@ -52,6 +66,7 @@ block content
                               | Memo File
                           tr
                             th
+                            th
                               input#MemoNumberInput.form-control(name='MemoNumberInput', placeholder='Type to search', type='text')
                             th
                               input#MemoNameInput.form-control(name='MemoNameInput', placeholder='Type to search', type='text')
@@ -63,6 +78,7 @@ block content
                         - var data = data;
                         each t in data
                           tr
+                            td
                             td= t.memoNumber
                             td= t.memoName
                             td= t.memoDateIssue
@@ -104,10 +120,8 @@ block content
                 span $ 35,000
 
 block script
-  script(type='text/javascript', src="/js/jquery-3.3.1.min.js")
-  script(type='text/javascript', src="https://code.jquery.com/ui/1.12.1/jquery-ui.js")
-  script(type='text/javascript', src="/js/jquery.dataTables.min.js")
-  script(type='text/javascript', src="/js/dataTables.select.min.js")
+  script(type='text/javascript', src="/js/libs/datatables/jquery.dataTables.min.js")
+  script(type='text/javascript', src="/js/libs/datatables/dataTables.select.min.js")
   script(type='text/javascript', src="/js/promotionTable.js")
 
 block styles

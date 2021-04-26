@@ -1,16 +1,12 @@
 const express = require('express');
 const app = express();
-const port = 3008;
+const port = 7007;
 const middleware = require('./middleware');
 const path = require('path');
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
-const cors = require('cors');
 const session = require('express-session');
 require('dotenv/config');
-
-app.use(cors());
-app.options('*', cors());
 
 // Middleware
 app.use(express.json());

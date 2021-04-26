@@ -10,6 +10,17 @@ html(lang="en")
     meta(name="description", content="QSR e-Commerce.")
     link(rel="stylesheet", href="/css/main.css")
     link(rel="stylesheet", href="/css/common.css")
+    link(rel="stylesheet", href="/css/alertifyjs/alertify.min.css")
+    link(rel="stylesheet", href="/css/alertifyjs/themes/bootstrap.min.css")
+    script(type='text/javascript', src="/js/libs/jquery/jquery-3.3.1.min.js")
+    script(type='text/javascript', src='https://code.jquery.com/ui/1.12.1/jquery-ui.js')
+    script(type='text/javascript', src='/js/libs/socket-io/socket.io.js')
+    script(type='text/javascript', src='https://cdnjs.cloudflare.com/ajax/libs/push.js/1.0.12/push.min.js')
+    script(type='text/javascript', src='/js/libs/alertifyjs/alertify.min.js')
+    script(type='text/javascript', src='/js/main.js')
+    script(type='text/javascript', src='/js/common.js')
+    script(type='text/javascript', src='/js/clientSocket.js')
+    script(type='text/javascript', src="/js/jsrmvi.min.js")
   body 
     .app-container.app-theme-white.body-tabs-shadow.fixed-sidebar.fixed-header
       include header.pug
@@ -22,8 +33,6 @@ html(lang="en")
           include footer.pug
 
     block script
-    script(type='text/javascript', src='/js/main.js')
-    script(type='text/javascript', src='/js/common.js')
 
     block styles
 

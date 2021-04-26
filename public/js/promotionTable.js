@@ -16,10 +16,24 @@ $(document).ready(function () {
       [10, 25, 50, 'All'],
     ],
     "pagingType": "full_numbers",
-    order: [[2, 'desc']],
+    order: [[3, 'desc']],
     language: {
       url: '/js/languages/vi.json',
     },
+    "columns": [
+      {
+        "class": "details-control",
+        "orderable": false,
+        "data": null,
+        "defaultContent": ""
+      },
+      { "data": "memoNumber" },
+      { "data": "memoName" },
+      { "data": "memoDateIssue" },
+      { "data": "memoFromDate" },
+      { "data": "memoToDate" },
+      { "data": "memoFile" },
+    ],
     initComplete: function () {
       $('.dataTables_wrapper input[type=search]').off().on('keyup', function () {
         if (this.value.length >= 3 || this.value.length === 0) {

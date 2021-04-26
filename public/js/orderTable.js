@@ -43,6 +43,16 @@ $(document).ready(function () {
   const rows = parseDataToTable(orderTable);
   table.rows.add(rows).draw();
 
+  socket.on('notify order update', (data) => {
+    table.rows().every(function ( rowIdx, tableLoop, rowLoop ) {
+      var rowData = this.data();
+      if (data.data.orderNum === rowData[0]) {
+        rowData[5] = statusCodeToString[data.data.orderStatusId];
+        table.row(this).data(rowData).draw();
+      }
+    })
+  });
+
   $('#eg2-0 thead tr:eq(1) th').each(function (i) {
     $('input', this).on('keyup', function () {
       var val = '';
