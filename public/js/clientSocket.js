@@ -15,6 +15,7 @@ var statusCodeToString = {
   40: 'Void',
 };
 
+
 var socket = io(SOCKET_URL, socketOptions);
 
 socket.on('notify order update', (data) => {
@@ -42,7 +43,7 @@ socket.on('notify order update', (data) => {
     },
   });
 
-  if ($('#Notify').hasClass('badge-notify') == false) {
+  if ($('#Notify').hasClass('badge-notify') === false) {
     document
       .getElementById('Notify')
       .classList.add('badge', 'badge-notify', 'badge-pill');
