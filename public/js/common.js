@@ -1,5 +1,48 @@
 var SOCKET_URL = 'http://qsrapi.qsrvietnam.com:3003';
 
+var statusCodeToString = {
+  10: 'Pending',
+  12: 'First Order',
+  15: 'POS Received',
+  18: 'Cooking',
+  20: 'Cooked',
+  25: 'On The Way',
+  28: 'Delivered',
+  30: 'Completed',
+  40: 'Void',
+};
+
+var syncStatus = {
+  113: 'Not Push',
+  200: 'Pushing',
+  202: 'Pushed',
+};
+
+var orderChannelToString = {
+  13: 'Call Center',
+  14: 'Online',
+  70: 'VNMM',
+};
+
+var paymentMethodToString = {
+  'Payments.CashOnDelivery': 'COD',
+  'Payments.Momo': 'Momo',
+  'Payments.SacombankPay': 'Sacombank',
+};
+
+var paymentStatusToString = {
+  10: 'Pending',
+  20: 'Waiting',
+  30: 'Paid',
+  40: 'Void',
+  50: 'Refund',
+};
+
+var orderMethodToString = {
+  false: 'Delivery',
+  true: 'Take away',
+};
+
 function numberWithCommas(x) {
   return x.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
 }
