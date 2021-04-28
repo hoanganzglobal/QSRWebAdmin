@@ -39,8 +39,8 @@ var paymentStatusToString = {
 };
 
 var orderMethodToString = {
-  false: 'Delivery',
-  true: 'Take away',
+  false: 'DE',
+  true: 'TA',
 };
 
 function numberWithCommas(x) {
