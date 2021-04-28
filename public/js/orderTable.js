@@ -43,6 +43,23 @@ $(document).ready(function () {
   const rows = parseDataToTable(orderTable);
   table.rows.add(rows).draw();
 
+  socket.on('notify order insert', (data) => {
+    table.row.add({
+      "orderCode": data.data.Id,
+      "orderBrandCode": "TPC",
+      "orderShopName": data.data.RK7RestaurantId,
+      "orderChannel": orderChannelToString(data.data.OrderChannel),
+      "orderPaymentMethod": paymentMethodToString(data.data.PaymentMethodSystemName),
+      "orderStatus": statusCodeToString[data.data.orderStatusId],
+      "orderPaymentStatus": paymentStatusToString(data.data.PaymentStatusId),
+      "orderMethod": orderMethodToString(data.data.PickupInStore),
+      "orderCustomerInfo": data.data.CustomerPhone + " | " | data.data.CustomerName,
+      "orderCreatedAt": data.data.OrderDate,
+      "orderDeliveryTime": data.data.DeliveryTime,
+      "orderTotalAmount": data.data.Total,
+    }).draw();
+  });
+
   socket.on('notify order update', (data) => {
     table.rows().every(function ( rowIdx, tableLoop, rowLoop ) {
       var rowData = this.data();
