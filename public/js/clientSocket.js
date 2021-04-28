@@ -5,24 +5,6 @@ var socketOptions = {
   transports: ['websocket'],
 };
 
-var statusCodeToString = {
-  10: 'Pending',
-  12: 'First Order',
-  15: 'POS Received',
-  18: 'Cooking',
-  20: 'Cooked',
-  25: 'On The Way',
-  28: 'Delivered',
-  30: 'Completed',
-  40: 'Void',
-};
-
-var syncStatus = {
-  113: 'Not Push',
-  200: 'Pushing',
-  202: 'Pushed',
-};
-
 var socket = io(SOCKET_URL, socketOptions);
 
 socket.on('notify order insert', (data) => {
