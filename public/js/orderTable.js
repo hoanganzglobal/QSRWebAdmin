@@ -194,7 +194,7 @@ function parseDataToTable(data = []) {
         let orderT = JSON.parse(orders[index]);
         orderT.OrderStatusId = order.OrderStatusId;
         orderT.PaymentStatusId = order.PaymentStatusId;
-        orderT.SyncStatus = order.SyncStatus;
+        orderT.syncStatus = order.syncStatus;
       }
       localStorage.setItem("orders", JSON.stringify(orders));
     }
