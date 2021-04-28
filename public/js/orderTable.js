@@ -32,7 +32,7 @@ $(document).ready(function () {
         $(this).val('');
         table.search('').draw();
       });
-      
+
       var api = this.api();
       api.$('td').click(function () {
         api.search(this.innerHTML).draw();
@@ -40,34 +40,58 @@ $(document).ready(function () {
     },
   });
 
-  const rows = parseDataToTable(orderTable);
-  table.rows.add(rows).draw();
+  let orders = (JSON.parse(localStorage.getItem('orders'))) ? JSON.parse(localStorage.getItem('orders')) : [];
+  if (orders.length > 0) {
+    for (var i = 0; i < orders.length; i++) {
+      let order = JSON.parse(orders[i]);
+      orderTable.push({
+        orderCode: order.Id,
+        orderBrandCode: "TPC",
+        orderShopName: order.ShopName,
+        orderChannel: orderChannelToString[order.OrderChannel],
+        orderPaymentMethod: paymentMethodToString[order.PaymentMethodSystemName],
+        orderStatus: statusCodeToString[order.OrderStatusId],
+        orderPaymentStatus: paymentStatusToString[order.PaymentStatusId],
+        orderMethod: orderMethodToString[order.PickupInStore],
+        orderCustomerInfo: order.CustomerPhone + ' | ' + order.CustomerName,
+        orderCreatedAt: order.OrderDate,
+        orderDeliveryTime: order.DeliveryTime,
+        orderTotalAmount: order.Total,
+      });
+    }
+    const rows = parseDataToTable(orderTable);
+    table.rows.add(rows).draw();
+  }
 
   socket.on('notify order insert', (data) => {
-    table.row.add({
-      "orderCode": data.data.Id,
-      "orderBrandCode": "TPC",
-      "orderShopName": data.data.RK7RestaurantId,
-      "orderChannel": orderChannelToString(data.data.OrderChannel),
-      "orderPaymentMethod": paymentMethodToString(data.data.PaymentMethodSystemName),
-      "orderStatus": statusCodeToString[data.data.orderStatusId],
-      "orderPaymentStatus": paymentStatusToString(data.data.PaymentStatusId),
-      "orderMethod": orderMethodToString(data.data.PickupInStore),
-      "orderCustomerInfo": data.data.CustomerPhone + " | " | data.data.CustomerName,
-      "orderCreatedAt": data.data.OrderDate,
-      "orderDeliveryTime": data.data.DeliveryTime,
-      "orderTotalAmount": data.data.Total,
-    }).draw();
+    const jrow = [
+      data.data.Id,
+      'TPC',
+      data.data.RK7RestaurantId,
+      orderChannelToString[data.data.OrderChannel],
+      paymentMethodToString[data.data.PaymentMethodSystemName],
+      statusCodeToString[data.data.OrderStatusId],
+      paymentStatusToString[data.data.PaymentStatusId],
+      orderMethodToString[data.data.PickupInStore],
+      data.data.CustomerPhone + " | " + data.data.CustomerName,
+      data.data.OrderDate,
+      data.data.DeliveryTime,
+      data.data.Total,
+    ];
+    table.row.add(jrow).draw();
+    syncOrderToTable(data.data);
   });
 
   socket.on('notify order update', (data) => {
-    table.rows().every(function ( rowIdx, tableLoop, rowLoop ) {
+    table.rows().every(function (rowIdx, tableLoop, rowLoop) {
       var rowData = this.data();
       if (data.data.orderNum === rowData[0]) {
-        rowData[5] = statusCodeToString[data.data.orderStatusId];
+        rowData[5] = statusCodeToString[data.data.OrderStatusId];
+        rowData[6] = statusCodeToString[data.data.PaymentStatusId];
         table.row(this).data(rowData).draw();
       }
-    })
+    });
+    syncOrderToTable(data.data);
   });
 
   $('#eg2-0 thead tr:eq(1) th').each(function (i) {
@@ -96,12 +120,12 @@ $(document).ready(function () {
         table
           .column(i)
           //.search(val)
-          .search( val ? '^'+val+'$' : '', true, false )
+          .search(val ? '^' + val + '$' : '', true, false)
           .draw();
       }
     });
   });
-  
+
   table
     .on('select', function (e, dt, type, indexes) {
       var rowData = table.rows(indexes).data().toArray();
@@ -146,4 +170,33 @@ function parseDataToTable(data = []) {
       orderTotalAmount,
     ];
   });
+
+  function syncOrderToTable(order) {
+    let orders = (JSON.parse(localStorage.getItem('orders'))) ? JSON.parse(localStorage.getItem('orders')) : [];
+    if (localStorage.getItem("orders") === null || cart.length === 0) {
+      orders = [];
+      orders.push(JSON.stringify(order));
+      localStorage.setItem("orders", JSON.stringify(orders));
+    }
+    else {
+      let index = -1;
+      for (var i=0; i < orders.length; i++) {
+        let orderT = JSON.parse(orders[i]);
+        if (orderT.Id === order.Id) {
+          index = i;
+          break;
+        }
+      }
+      if (index == -1) {
+        orders.push(JSON.stringify(order));
+      }
+      else {
+        let orderT = JSON.parse(orders[index]);
+        orderT.OrderStatusId = order.OrderStatusId;
+        orderT.PaymentStatusId = order.PaymentStatusId;
+        orderT.SyncStatus = order.SyncStatus;
+      }
+      localStorage.setItem("orders", JSON.stringify(orders));
+    }
+  }
 }
