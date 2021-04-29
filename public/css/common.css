@@ -12,6 +12,46 @@ button:focus {
   color: #fff;
   background-color: #d92550;
 }
+.badge-pending {
+  color: #fff;
+  background-color: #343a40;
+}
+.badge-confirmed {
+  color: #fff;
+  background-color: #000080;
+}
+.badge-completed {
+  color: #fff;
+  background-color: #00a65a;
+}
+.badge-void {
+  color: #fff;
+  background-color: #ff0000;
+}
+.badge-first {
+  color: #fff;
+  background-color: #d92550;
+}
+.badge-cooking {
+  color: #212529;
+  background-color: #ffa500;
+}
+.badge-cooked {
+  color: #fff;
+  background-color: #16aaff;
+}
+.badge-delivered {
+  color: #fff;
+  background-color: #d2691e;
+}
+.badge-ontheway {
+  color: #212529;
+  background-color: #c0c0c0;
+}
+.badge-refund {
+  color: #fff;
+  background-color: #16aaff;
+}
 
 td.details-control {
   background: url('../images/details_open.png') no-repeat center center;
