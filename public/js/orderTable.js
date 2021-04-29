@@ -289,7 +289,7 @@ function changeBadgeSyncStatus(statusId) {
 
 function loadOrders(table) {
   var settings = {
-    url: 'http://localhost:7007/orders',
+    url: 'http://qsrapi.qsrvietnam.com:7007/orders',
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
