@@ -1,4 +1,4 @@
-var SOCKET_URL = 'http://localhost:3003';
+var SOCKET_URL = 'http://qsrapi.qsrvietnam.com:3003';
 
 var statusCodeToString = {
   10: 'Pending',
