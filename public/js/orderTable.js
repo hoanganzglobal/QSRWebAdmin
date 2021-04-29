@@ -41,6 +41,9 @@ $(document).ready(function () {
   });
 
   loadOrders(table);
+  $('#ReloadTable').click(function () {
+    loadOrders(table);
+  })
 
   socket.on('notify order insert', (data) => {
     const jrow = [
@@ -297,11 +300,14 @@ function loadOrders(table) {
   };
 
   $.ajax(settings).done(function (response) {
+    orderTable = [];
     var orders = response.data;
     for (var i = 0; i < orders.length; i++) {
       orderTable.push(orders[i]);
     }
-    const rows = parseDataToTable(response.data);
+    $('#eg2-0').LoadingOverlay("hide", true);
+    const rows = parseDataToTable(orderTable);
+    table.clear().draw();
     table.rows.add(rows).draw();
   });
 }
