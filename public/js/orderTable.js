@@ -40,58 +40,39 @@ $(document).ready(function () {
     },
   });
 
-  let orders = (JSON.parse(localStorage.getItem('orders'))) ? JSON.parse(localStorage.getItem('orders')) : [];
-  if (orders.length > 0) {
-    for (var i = 0; i < orders.length; i++) {
-      let order = JSON.parse(orders[i]);
-      orderTable.push({
-        orderCode: order.Id,
-        orderBrandCode: "TPC",
-        orderShopName: order.ShopName,
-        orderChannel: orderChannelToString[order.OrderChannel],
-        orderPaymentMethod: paymentMethodToString[order.PaymentMethodSystemName],
-        orderStatus: statusCodeToString[order.OrderStatusId],
-        orderPaymentStatus: paymentStatusToString[order.PaymentStatusId],
-        orderMethod: orderMethodToString[order.PickupInStore],
-        orderCustomerInfo: order.CustomerPhone + ' | ' + order.CustomerName,
-        orderCreatedAt: order.OrderDate,
-        orderDeliveryTime: order.DeliveryTime,
-        orderTotalAmount: order.Total,
-      });
-    }
-    const rows = parseDataToTable(orderTable);
-    table.rows.add(rows).draw();
-  }
+  loadOrders(table);
 
   socket.on('notify order insert', (data) => {
     const jrow = [
       data.data.Id,
       'TPC',
-      data.data.RK7RestaurantId,
+      data.data.ShopName,
       orderChannelToString[data.data.OrderChannel],
       paymentMethodToString[data.data.PaymentMethodSystemName],
-      statusCodeToString[data.data.OrderStatusId],
-      paymentStatusToString[data.data.PaymentStatusId],
+      changeBadgeOrderStatus(data.data.OrderStatusId),
+      changeBadgePaymentStatus(data.data.PaymentStatusId),
       orderMethodToString[data.data.PickupInStore],
-      data.data.CustomerPhone + " | " + data.data.CustomerName,
+      data.data.CustomerPhone + ' | ' + data.data.CustomerName,
+      changeBadgeSyncStatus(data.data.syncStatus),
       data.data.OrderDate,
       data.data.DeliveryTime,
       data.data.Total,
     ];
     table.row.add(jrow).draw();
-    syncOrderToTable(data.data);
+    syncOrderToTable(orderTable, data.data);
   });
 
   socket.on('notify order update', (data) => {
     table.rows().every(function (rowIdx, tableLoop, rowLoop) {
       var rowData = this.data();
-      if (data.data.orderNum === rowData[0]) {
-        rowData[5] = statusCodeToString[data.data.OrderStatusId];
-        rowData[6] = statusCodeToString[data.data.PaymentStatusId];
+      if (data.data.Id === rowData[0]) {
+        rowData[5] = changeBadgeOrderStatus(data.data.OrderStatusId);
+        rowData[6] = changeBadgePaymentStatus(data.data.PaymentStatusId);
+        rowData[9] = changeBadgeSyncStatus(data.data.syncStatus);
         table.row(this).data(rowData).draw();
       }
     });
-    syncOrderToTable(data.data);
+    syncOrderToTable(orderTable, data.data);
   });
 
   $('#eg2-0 thead tr:eq(1) th').each(function (i) {
@@ -151,52 +132,219 @@ function parseDataToTable(data = []) {
       orderPaymentStatus,
       orderMethod,
       orderCustomerInfo,
+      orderSyncStatus,
       orderCreatedAt,
       orderDeliveryTime,
-      orderTotalAmount,
+      orderTotal,
     } = r;
     return [
       orderCode,
       orderBrandCode,
       orderShopName,
-      orderChannel,
-      orderPaymentMethod,
-      orderStatus,
-      orderPaymentStatus,
-      orderMethod,
+      orderChannelToString[orderChannel],
+      paymentMethodToString[orderPaymentMethod],
+      changeBadgeOrderStatus(orderStatus),
+      changeBadgePaymentStatus(orderPaymentStatus),
+      orderMethodToString[orderMethod],
       orderCustomerInfo,
+      changeBadgeSyncStatus(orderSyncStatus),
       orderCreatedAt,
       orderDeliveryTime,
-      orderTotalAmount,
+      orderTotal,
     ];
   });
+}
 
-  function syncOrderToTable(order) {
-    let orders = (JSON.parse(localStorage.getItem('orders'))) ? JSON.parse(localStorage.getItem('orders')) : [];
-    if (localStorage.getItem("orders") === null || cart.length === 0) {
-      orders = [];
-      orders.push(JSON.stringify(order));
-      localStorage.setItem("orders", JSON.stringify(orders));
+function changeBadgeOrderStatus(statusId) {
+  var html = '';
+  switch (statusId) {
+    case 10:
+      html =
+        '<div class="badge badge-pending">' +
+        statusCodeToString[statusId] +
+        '</div>';
+      break;
+    case 12:
+    case 13:
+    case 14:
+      html =
+        '<div class="badge badge-first">' +
+        statusCodeToString[statusId] +
+        '</div>';
+      break;
+    case 15:
+      html =
+        '<div class="badge badge-confirmed">' +
+        statusCodeToString[statusId] +
+        '</div>';
+      break;
+    case 18:
+      html =
+        '<div class="badge badge-cooking">' +
+        statusCodeToString[statusId] +
+        '</div>';
+      break;
+    case 20:
+      html =
+        '<div class="badge badge-cooked">' +
+        statusCodeToString[statusId] +
+        '</div>';
+      break;
+    case 25:
+      html =
+        '<div class="badge badge-ontheway">' +
+        statusCodeToString[statusId] +
+        '</div>';
+      break;
+    case 28:
+      html =
+        '<div class="badge badge-delivered">' +
+        statusCodeToString[statusId] +
+        '</div>';
+      break;
+    case 30:
+      html =
+        '<div class="badge badge-completed">' +
+        statusCodeToString[statusId] +
+        '</div>';
+      break;
+    case 40:
+      html =
+        '<div class="badge badge-void">' +
+        statusCodeToString[statusId] +
+        '</div>';
+      break;
+    default:
+      html = statusCodeToString[statusId];
+      break;
+  }
+
+  return html;
+}
+
+function changeBadgePaymentStatus(statusId) {
+  var html = '';
+  switch (statusId) {
+    case 10:
+      html =
+        '<div class="badge badge-pending">' +
+        paymentStatusToString[statusId] +
+        '</div>';
+      break;
+    case 20:
+      html =
+        '<div class="badge badge-cooked">' +
+        paymentStatusToString[statusId] +
+        '</div>';
+      break;
+    case 30:
+      html =
+        '<div class="badge badge-completed">' +
+        paymentStatusToString[statusId] +
+        '</div>';
+      break;
+    case 40:
+      html =
+        '<div class="badge badge-void">' +
+        paymentStatusToString[statusId] +
+        '</div>';
+      break;
+    case 50:
+      html =
+        '<div class="badge badge-refund">' +
+        paymentStatusToString[statusId] +
+        '</div>';
+      break;
+    default:
+      html = paymentStatusToString[statusId];
+      break;
+  }
+
+  return html;
+}
+
+function changeBadgeSyncStatus(statusId) {
+  var html = '';
+  statusId = parseInt(statusId) ? parseInt(statusId) : 0;
+  switch (statusId) {
+    case 113:
+      html =
+        '<div class="badge badge-danger">' + syncStatus[statusId] + '</div>';
+      break;
+    case 200:
+      html =
+        '<div class="badge badge-warning">' + syncStatus[statusId] + '</div>';
+      break;
+    case 202:
+      html =
+        '<div class="badge badge-completed">' + syncStatus[statusId] + '</div>';
+      break;
+    default:
+      html = '';
+      break;
+  }
+
+  return html;
+}
+
+function loadOrders(table) {
+  var settings = {
+    url: 'http://localhost:7007/orders',
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  };
+
+  $.ajax(settings).done(function (response) {
+    var orders = response.data;
+    for (var i = 0; i < orders.length; i++) {
+      orderTable.push(orders[i]);
     }
-    else {
-      let index = -1;
-      for (var i=0; i < orders.length; i++) {
-        let orderT = JSON.parse(orders[i]);
-        if (orderT.Id === order.Id) {
-          index = i;
-          break;
-        }
+    const rows = parseDataToTable(response.data);
+    table.rows.add(rows).draw();
+  });
+}
+
+function syncOrderToTable(orderTable, order) {
+  if (orderTable.length == 0) {
+    addOrderToTable(orderTable, order);
+  }
+  else {
+    let index = -1;
+    for (var i = 0; i < orderTable.length; i++) {
+      let orderT = orderTable[i];
+      if (orderT.orderCode == order.Id) {
+        index = i;
+        break;
       }
-      if (index == -1) {
-        orders.push(JSON.stringify(order));
-      }
-      else {
-        let orderT = JSON.parse(orders[index]);
-        orderT.OrderStatusId = order.OrderStatusId;
-        orderT.PaymentStatusId = order.PaymentStatusId;
-        orderT.syncStatus = order.syncStatus;
-      }
-      localStorage.setItem("orders", JSON.stringify(orders));
+    }
+    if (index == -1) {
+      addOrderToTable(orderTable, order);
+    } else {
+      let orderT = orderTable[index];
+      orderT.orderStatus = order.OrderStatusId;
+      orderT.orderPaymentStatus = order.PaymentStatusId;
+      orderT.orderSyncStatus = order.syncStatus;
+      orderTable[index] = orderT;
     }
   }
+}
+
+function addOrderToTable(orderTable, order) {
+  orderTable.push({
+    orderCode: order.Id,
+    orderBrandCode: 'TPC',
+    orderShopName: order.ShopName,
+    orderChannel: order.OrderChannel,
+    orderPaymentMethod: order.PaymentMethodSystemName,
+    orderStatus: order.OrderStatusId,
+    orderPaymentStatus: order.PaymentStatusId,
+    orderMethod: order.PickupInStore,
+    orderCustomerInfo: order.CustomerPhone + ' | ' + order.CustomerName,
+    orderSyncStatus: order.syncStatus,
+    orderCreatedAt: order.OrderDate,
+    orderDeliveryTime: order.DeliveryTime,
+    orderTotal: order.Total
+  });
 }

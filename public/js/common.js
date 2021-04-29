@@ -1,9 +1,11 @@
-var SOCKET_URL = 'http://qsrapi.qsrvietnam.com:3003';
+var SOCKET_URL = 'http://localhost:3003';
 
 var statusCodeToString = {
   10: 'Pending',
   12: 'First Order',
-  15: 'POS Received',
+  13: 'Big Order',
+  14: 'First Big Order',
+  15: 'Confirmed',
   18: 'Cooking',
   20: 'Cooked',
   25: 'On The Way',
@@ -16,6 +18,7 @@ var syncStatus = {
   113: 'Not Push',
   200: 'Pushing',
   202: 'Pushed',
+  300: 'Cancelled',
 };
 
 var orderChannelToString = {
@@ -39,8 +42,8 @@ var paymentStatusToString = {
 };
 
 var orderMethodToString = {
-  false: 'DE',
-  true: 'TA',
+  false: 'Delivery',
+  true: 'Take away',
 };
 
 function numberWithCommas(x) {
