@@ -291,6 +291,7 @@ function changeBadgeSyncStatus(statusId) {
 }
 
 function loadOrders(table) {
+  $('#eg2-0').LoadingOverlay('show');
   var settings = {
     url: 'http://qsrapi.qsrvietnam.com:7007/orders',
     method: 'POST',
