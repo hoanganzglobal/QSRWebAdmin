@@ -69,6 +69,8 @@ block content
                             th
                               | Customer Info
                             th
+                              | Sync Status
+                            th
                               | Created At
                             th
                               | Delivery Time
@@ -96,14 +98,28 @@ block content
                                 option(value='') All
                                 option(value='cod') COD
                                 option(value='momo') Momo
-                                option(value='sacombank pay') Sacombank Pay
+                                option(value='sacombank') Sacombank
                             th
                               select#OrderStatusSelect.form-control(name='OrderStatusSelect')
                                 option(value='') All
+                                option(value='Pending') Pending
                                 option(value='First Order') First Order
                                 option(value='First Big Order') First Big Order
+                                option(value='Confirmed') Confirmed
                                 option(value='Cooking') Cooking
+                                option(value='Cooked') Cooked
+                                option(value='On The Way') On The Way
+                                option(value='Delivered') Delivered
+                                option(value='Completed') Completed
+                                option(value='Void') Void
                             th
+                              select#PaymentStatusSelect.form-control(name='PaymentStatusSelect')
+                                option(value='') All
+                                option(value='Pending') Pending
+                                option(value='Waiting') Waiting
+                                option(value='Paid') Paid
+                                option(value='Void') Void
+                                option(value='Refund') Refund
                             th
                               select#OrderMethodSelect.form-control(name='OrderMethodSelect')
                                 option(value='') All
@@ -111,6 +127,13 @@ block content
                                 option(value='ta') Take-Away
                             th
                               input#CusInfoInput.form-control(name='CusInfoInput', placeholder='type to search', type='text')
+                            th
+                              select#SyncStatusSelect.form-control(name='SyncStatusSelect')
+                                option(value='') All
+                                option(value='Not Push') Not Push
+                                option(value='Pushing') Pushing
+                                option(value='Pushed') Pushed
+                                option(value='Cancelled') Cancelled
                             th
                             th
                             th
