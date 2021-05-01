@@ -1,4 +1,4 @@
-var socketOptions = {
+/*var socketOptions = {
   'force new connection': true,
   reconnectionAttempts: 'Infinity',
   timeout: 10000,
@@ -8,7 +8,7 @@ var socketOptions = {
 var socket = io(SOCKET_URL, socketOptions);
 
 socket.on('notify order insert', (data) => {
-  /*alertify.set('notifier', 'position', 'top-right');
+  alertify.set('notifier', 'position', 'top-right');
   alertify.success(
     'New order id is <b>' +
       data.data.Id +
@@ -19,7 +19,7 @@ socket.on('notify order insert', (data) => {
   var message =
     'New order id is ' +
     data.data.Id;
-  NotifyMe('Notify new order!', message);*/
+  NotifyMe('Notify new order!', message);
 
   if ($('#Notify').hasClass('badge-notify') == false) {
     document
@@ -33,7 +33,7 @@ socket.on('notify order insert', (data) => {
 });
 
 socket.on('notify order update', (data) => {
-  /*alertify.set('notifier', 'position', 'top-right');
+  alertify.set('notifier', 'position', 'top-right');
   alertify.success(
     'New update status of order id <b>' +
       data.data.Id +
@@ -48,7 +48,7 @@ socket.on('notify order update', (data) => {
     data.data.Id +
     ' is: ' +
     statusCodeToString[data.data.OrderStatusId];
-  NotifyMe('Notify order updated!', message);*/
+  NotifyMe('Notify order updated!', message);
 
   if ($('#Notify').hasClass('badge-notify') == false) {
     document
@@ -59,4 +59,4 @@ socket.on('notify order update', (data) => {
   var countNotify = countNotifyStr.length === 0 ? 0 : parseInt(countNotifyStr);
   countNotify++;
   document.getElementById('Notify').innerHTML = countNotify.toString();
-});
+});*/
