@@ -1,4 +1,4 @@
-/*var socketOptions = {
+var socketOptions = {
   'force new connection': true,
   reconnectionAttempts: 'Infinity',
   timeout: 10000,
@@ -7,7 +7,7 @@
 
 var socket = io(SOCKET_URL, socketOptions);
 
-socket.on('notify order insert', (data) => {
+/*socket.on('notify order insert', (data) => {
   alertify.set('notifier', 'position', 'top-right');
   alertify.success(
     'New order id is <b>' +
