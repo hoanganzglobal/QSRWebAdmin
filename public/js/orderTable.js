@@ -33,10 +33,10 @@ $(document).ready(function () {
         table.search('').draw();
       });
 
-      var api = this.api();
+      /*var api = this.api();
       api.$('td').click(function () {
         api.search(this.innerHTML).draw();
-      });
+      });*/
     },
   });
 
@@ -110,7 +110,7 @@ $(document).ready(function () {
     });
   });
 
-  table
+  /*table
     .on('select', function (e, dt, type, indexes) {
       var rowData = table.rows(indexes).data().toArray();
       var data = rowData[0];
@@ -120,7 +120,7 @@ $(document).ready(function () {
       var rowData = table.rows(indexes).data().toArray();
       var data = rowData[0];
       alert(data[0]);
-    });
+    });*/
 });
 
 function parseDataToTable(data = []) {
