@@ -15,7 +15,7 @@ $(document).ready(function () {
       [10, 25, 50, -1],
       [10, 25, 50, 'All'],
     ],
-    order: [[0, 'desc']],
+    order: [[0, 'desc'],[11, 'desc']],
     language: {
       url: '/js/languages/vi.json',
     },
